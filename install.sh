@@ -499,8 +499,8 @@ rm -f /root/*.txt
 
 
 function SENDER_NOTIFICATION() {
-CHATID="7428226275"
-KEY="7382456251:AAFFC-8A6VsotlfAQj6MXe4Mff-7MNX5yRs"
+CHATID="6909128011"
+KEY="7665798896:AAH6oThmdoWiZYQ7Z_Sv9V-kzV26KcmJzVU"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
 TEXT="
 <code>= = = = = = = = = = = = =</code>
@@ -514,7 +514,7 @@ TEXT="
 <b>Time    :</b> <code>$time</code>
 <b>Expired :</b> <code>$exp</code>
 <code>= = = = = = = = = = = = =</code>
-<b>        LUNATIC TUNNELING     </b>
+<b>     ULTRASONIC TECHNOLOGY    </b>
 <code>= = = = = = = = = = = = =</code>"
 curl -s --max-time 10 -X POST "$URL" \
 -d "chat_id=$CHATID" \

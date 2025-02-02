@@ -78,6 +78,7 @@ checking_sc() {
     exit 0
   fi
 }
+checking_sc
 
 clear
 
@@ -89,33 +90,39 @@ else
     exit 1
 fi
 
-if [[ "${ID}" == "ubuntu" || "${ID}" == "debian" ]]; then
-    echo -ne "Sistem operasi yang didukung: Ubuntu atau Debian\n"
+if [[ ${ID} == "ubuntu" || ${ID} == "debian" ]]; then
+    echo -ne
 else
-    echo -e " ${r}Script ini hanya mendukung sistem operasi berikut:\n"
+    echo -e " ${r}This Script only Support for OS"
+    echo -e ""
     echo -e " - ${y}Ubuntu 20.04${NC}"
     echo -e " - ${y}Ubuntu 21.04${NC}"
     echo -e " - ${y}Ubuntu 22.04${NC}"
     echo -e " - ${y}Ubuntu 23.04${NC}"
     echo -e " - ${y}Ubuntu 24.04${NC}"
+    echo ""
     echo -e " - ${y}Debian 10${NC}"
     echo -e " - ${y}Debian 11${NC}"
     echo -e " - ${y}Debian 12${NC}"
+    Credit_Sc
     exit 0
 fi
 
-if [[ "${VERSION_ID}" == "10" || "${VERSION_ID}" == "11" || "${VERSION_ID}" == "12" || "${VERSION_ID}" == "20.04" || "${VERSION_ID}" == "21.04" || "${VERSION_ID}" == "22.04" || "${VERSION_ID}" == "23.04" || "${VERSION_ID}" == "24.04" ]]; then
-    echo -ne "Versi sistem operasi yang didukung: 10, 11, 12, 20.04, 21.04, 22.04, 23.04, 24.04\n"
+if [[ ${VERSION_ID} == "10" || ${VERSION_ID} == "11" || ${VERSION_ID} == "12" || ${VERSION_ID} == "20.04" || ${VERSION_ID} == "21.04" || ${VERSION_ID} == "22.04" || ${VERSION_ID} == "23.04" || ${VERSION_ID} == "24.04" ]]; then
+    echo -ne
 else
-    echo -e " ${r}Script ini hanya mendukung versi sistem operasi berikut:\n"
+    echo -e " ${r}This Script only Support for OS"
+    echo -e ""
     echo -e " - ${y}Ubuntu 20.04${NC}"
     echo -e " - ${y}Ubuntu 21.04${NC}"
     echo -e " - ${y}Ubuntu 22.04${NC}"
     echo -e " - ${y}Ubuntu 23.04${NC}"
     echo -e " - ${y}Ubuntu 24.04${NC}"
+    echo ""
     echo -e " - ${y}Debian 10${NC}"
     echo -e " - ${y}Debian 11${NC}"
     echo -e " - ${y}Debian 12${NC}"
+    Credit_Sc
     exit 0
 fi
 

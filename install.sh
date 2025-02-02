@@ -78,7 +78,6 @@ checking_sc() {
     exit 0
   fi
 }
-checking_sc
 
 clear
 
@@ -102,7 +101,6 @@ else
     echo -e " - ${y}Debian 10${NC}"
     echo -e " - ${y}Debian 11${NC}"
     echo -e " - ${y}Debian 12${NC}"
-    Credit_Script
     exit 0
 fi
 
@@ -118,7 +116,6 @@ else
     echo -e " - ${y}Debian 10${NC}"
     echo -e " - ${y}Debian 11${NC}"
     echo -e " - ${y}Debian 12${NC}"
-    Credit_Script
     exit 0
 fi
 

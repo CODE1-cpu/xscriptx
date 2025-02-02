@@ -1,7 +1,7 @@
 #!/bin/bash
 
 rm -f $0
-
+clear
 apt update
 apt install curl -y
 apt install wget -y
@@ -46,7 +46,7 @@ echo -e "${c}└─────────────────────�
 
 data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
-url_izin="https://raw.githubusercontent.com/CODE1-cpu/vps_access/main/ip"
+url_izin="https://raw.githubusercontent.com/kanggacorvpn/vps_access/main/ip"
 client=$(curl -sS $url_izin | grep $IP | awk '{print $2}')
 exp=$(curl -sS $url_izin | grep $IP | awk '{print $3}')
 today=`date -d "0 days" +"%Y-%m-%d"`
@@ -72,12 +72,15 @@ checking_sc() {
     echo -e "\e[96;1m   Unli IP     : Rp.150.000  \e[0m"
     echo -e "\e[97;1m   open source : Rp.400.000  \e[0m"       
     echo -e ""
-    echo -e "\033[34m Contack WA/TLP: +62 859-3192-5073     \033[0m"
+    echo -e "\033[34m Contack WA/TLP: 083197765857     \033[0m"
+    echo -e "\033[34m Telegram user : t.me/ian_khvicha \033[0m"    
     echo -e "\033[96m============================================\033[0m"
     exit 0
   fi
 }
 checking_sc
+
+clear
 
 function ARCHITECTURE() {
 if [[ "$( uname -m | awk '{print $1}' )" == "x86_64" ]]; then
@@ -101,6 +104,7 @@ else
     echo -e " - ${y}Debian 10${NC}"
     echo -e " - ${y}Debian 11${NC}"
     echo -e " - ${y}Debian 12${NC}"
+    Credit_Sc
     exit 0
 fi
 
@@ -118,6 +122,7 @@ else
     echo -e " - ${y}Debian 10${NC}"
     echo -e " - ${y}Debian 11${NC}"
     echo -e " - ${y}Debian 12${NC}"
+    Credit_Sc
     exit 0
 fi
 
@@ -129,6 +134,8 @@ fi
 
 # call
 ARCHITECTURE
+
+clear
 
 function MakeDirectories() {
     # Direktori utama
@@ -175,14 +182,41 @@ function MakeDirectories() {
 
 MakeDirectories
 
-
-function domain_setup(){
-wget https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/domains.sh && chmod +x domains.sh && ./domains.sh
 clear
+
+function DOMAINS_MANAGER() {
+    echo -e "\e[97;1m =========================== \e[0m"
+    echo -e "\e[97;1m   DOMAINS CHANGES TO VPS    \e[0m"
+    echo -e "\e[97;1m =========================== \e[0m"
+    echo -e "\e[92;1m 1. Domain sendiri \e[0m"
+    echo -e "\e[92;1m 2. Domain random  \e[0m"
+    echo -e "\e[97;1m =========================== \e[0m"
+    echo -e ""
+    read -p "Select choice domain 1-2: " DOMAINS_SELECT
+
+    if [ "$DOMAINS_SELECT" == "1" ]; then
+        clear
+        echo -e "\e[97;1m =========================== \e[0m"
+        echo -e "\e[96;1m      DOMAINS SENDIRI        \e[0m"
+        echo -e "\e[97;1m =========================== \e[0m"
+        echo -e ""
+        read -p "Your domains: " YUDOMAINS
+        echo "$YUDOMAINS" > /etc/xray/domain
+        echo "$YUDOMAINS" > /root/domain
+    elif [ "$DOMAINS_SELECT" == "2" ]; then
+        wget https://raw.githubusercontent.com/kanggacorvpn/vipscripts/main/domains.sh \
+             -O /tmp/domains.sh >/dev/null 2>&1 && \
+             chmod +x /tmp/domains.sh && /tmp/domains.sh
+    else
+        echo -e "\e[91;1mPilihan tidak valid!\e[0m"
+    fi
+    clear
 }
 
-domain_setup
+DOMAINS_MANAGER
 
+
+clear
 function Installasi(){
 animation_loading() {
     CMD[0]="$1"
@@ -201,11 +235,11 @@ animation_loading() {
     ) >/dev/null 2>&1 &
 
     tput civis # Sembunyikan kursor
-    echo -ne "  \033[0;33mProcessed Install \033[1;37m- \033[0;33m["
+    echo -ne "  \033[0;32mProcces\033[1;37m- \033[0;33m["
     
     while true; do
         for ((i = 0; i < 18; i++)); do
-            echo -ne "\033[0;32m#"
+            echo -ne "\033[97;1m#"
             sleep 0.1
         done
         
@@ -215,78 +249,27 @@ animation_loading() {
             break
         fi
         
-        echo -e "\033[0;33m]"
+        echo -e "\033[0;31m]"
         sleep 1
         tput cuu1 # Kembali ke baris sebelumnya
         tput dl1   # Hapus baris sebelumnya
-        echo -ne "  \033[0;33mProcessed Install \033[1;37m- \033[0;33m["
+        echo -ne "  \033[0;32mProcess\033[1;37m- \033[0;31m["
     done
     
-    echo -e "\033[0;33m]\033[1;37m -\033[1;32m Succes !\033[1;37m"
+    echo -e "\033[0;31m]\033[1;37m -\033[1;32m OK!\033[0m"
     tput cnorm # Tampilkan kursor kembali
 }
 
-TOOLS_PKG() {
-cd
-wget https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/PACKAGES/tools.sh && chmod +x tools.sh && ./tools.sh &> /dev/null
-
-wget -q -O /etc/port.txt "https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/PACKAGES/port.txt"
-
-clear
-start=$(date +%s)
-ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
-apt install git curl -y >/dev/null 2>&1
-apt install python -y >/dev/null 2>&1
-}
-
-INSTALL_SSH() {
-
-# install at untuk meng kill triall ssh
-sudo apt install at -y >/dev/null 2>&1
-
-wget https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/ssh/ssh-vpn.sh && chmod +x ssh-vpn.sh && ./ssh-vpn.sh
-
-# installer gotop
-gotop_latest="$(curl -s https://api.github.com/repos/xxxserxxx/gotop/releases | grep tag_name | sed -E 's/.*"v(.*)".*/\1/' | head -n 1)"
-gotop_link="https://github.com/xxxserxxx/gotop/releases/download/v$gotop_latest/gotop_v"$gotop_latest"_linux_amd64.deb"
-curl -sL "$gotop_link" -o /tmp/gotop.deb
-dpkg -i /tmp/gotop.deb
-
-clear
-} 
-
-INSTALL_XRAY() {
-
-# install semua kebutuhan xray
-wget https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/xray/ins-xray.sh && chmod +x ins-xray.sh && ./ins-xray.sh
-clear
-
-# limit quota & service xray
-wget https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/Xbw_LIMIT/install.sh && chmod +x install.sh && ./install.sh
-clear
-
-# limit service ip xray
-wget https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/AUTOKILL_SERVICE/service.sh && chmod +x service.sh && ./service.sh
-clear
-
-}
-
 INSTALL_WEBSOCKET() {
-
-# install-ws
-wget https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/ws/install-ws.sh && chmod +x install-ws.sh && ./install-ws.sh
-clear
-
-# banner ssh
-wget https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/ws/banner_ssh.sh && chmod +x banner_ssh.sh && ./banner_ssh.sh
-clear
+wget https://raw.githubusercontent.com/kanggacorvpn/vipscripts/main/ws/install-ws.sh && chmod +x install-ws.sh && ./install-ws.sh
+wget https://raw.githubusercontent.com/kanggacorvpn/vipscripts/main/ws/banner_ssh.sh && chmod +x banner_ssh.sh && ./banner_ssh.sh
 }
 
 INSTALL_BACKUP() {
 apt install rclone
 printf "q\n" | rclone config
-wget -O /root/.config/rclone/rclone.conf "https://github.com/CODE1-cpu/xscriptx/raw/main/rclone.conf"
-git clone  https://github.com/CODE1-cpu/wondershaper.git
+wget -O /root/.config/rclone/rclone.conf "https://github.com/kanggacorvpn/vipscripts/raw/main/rclone.conf"
+git clone https://github.com/kanggacorvpn/wondershaper.git
 cd wondershaper
 make install
 cd
@@ -297,25 +280,22 @@ rm -f /root/limit.sh
 }
 
 INSTALL_OHP() {
-wget https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/ws/ohp.sh && chmod +x ohp.sh && ./ohp.sh
-clear
+wget https://raw.githubusercontent.com/kanggacorvpn/vipscripts/main/ws/ohp.sh && chmod +x ohp.sh && ./ohp.sh
 }
 
 INSTALL_FEATURE() {
-wget https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/menu/install_menu.sh && chmod +x install_menu.sh && ./install_menu.sh
-clear
+wget https://raw.githubusercontent.com/kanggacorvpn/vipscripts/main/menu/install_menu.sh && chmod +x install_menu.sh && ./install_menu.sh
 }
 
 INSTALL_UDP_CUSTOM() {
-wget https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/ws/UDP.sh && chmod +x UDP.sh && ./UDP.sh
-clear
+wget https://raw.githubusercontent.com/kanggacorvpn/vipscripts/main/ws/UDP.sh && chmod +x UDP.sh && ./UDP.sh
 }
 
 if [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "ubuntu" ]]; then
-echo -e "${g}Setup nginx For OS Is $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')${NC}"
+echo -e "\033[96;1mSETUP OS : $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')\e[0m"
 UNTUK_UBUNTU
 elif [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "debian" ]]; then
-echo -e "${g}Setup nginx For OS Is $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')${NC}"
+echo -e "\033[96;1mSETUP OS : $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')\e[0m"
 UNTUK_DEBIAN
 else
 echo -e " Your OS Is Not Supported ( ${YELLOW}$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')${FONT} )"
@@ -323,20 +303,16 @@ fi
 }
 
 function UNTUK_DEBIAN(){
-lane_atas
-echo -e "${c}│      ${g}PROCESS INSTAKKED MODUL PACKAGE${NC}     ${c}│${NC}"
-lane_bawah
-animation_loading 'TOOLS_PKG'
 
-lane_atas
-echo -e "${c}│      ${g}PROCESS INSTALLED SSH & OPENVPN${NC}     ${c}│${NC}"
-lane_bawah
-animation_loading 'INSTALL_SSH'
+#lane_atas
+#echo -e "${c}│      ${g}PROCESS INSTALLED SSH & OPENVPN${NC}     ${c}│${NC}"
+#lane_bawah
+#animation_loading 'INSTALL_SSH'
 
-lane_atas
-echo -e "${c}│           ${g}PROCESS INSTALLED XRAY${NC}         ${c}│${NC}"
-lane_bawah
-animation_loading 'INSTALL_XRAY'
+#lane_atas
+#echo -e "${c}│           ${g}PROCESS INSTALLED XRAY${NC}         ${c}│${NC}"
+#lane_bawah
+#animation_loading 'INSTALL_XRAY'
 
 lane_atas
 echo -e "${c}│       ${g}PROCESS INSTALLED WEBSOCKET SSH${NC}    ${c}│${NC}"
@@ -366,20 +342,16 @@ animation_loading 'INSTALL_UDP_CUSTOM'
 }
 
 function UNTUK_UBUNTU(){
-lane_atas
-echo -e "${c}│      ${g}PROCESS INSTAKKED MODUL PACKAGE${NC}     ${c}│${NC}"
-lane_bawah
-animation_loading 'TOOLS_PKG'
 
-lane_atas
-echo -e "${c}│      ${g}PROCESS INSTALLED SSH & OPENVPN${NC}     ${c}│${NC}"
-lane_bawah
-animation_loading 'INSTALL_SSH'
+#lane_atas
+#echo -e "${c}│      ${g}PROCESS INSTALLED SSH & OPENVPN${NC}     ${c}│${NC}"
+#lane_bawah
+#animation_loading 'INSTALL_SSH'
 
-lane_atas
-echo -e "${c}│           ${g}PROCESS INSTALLED XRAY${NC}         ${c}│${NC}"
-lane_bawah
-animation_loading 'INSTALL_XRAY'
+#lane_atas
+#echo -e "${c}│           ${g}PROCESS INSTALLED XRAY${NC}         ${c}│${NC}"
+#lane_bawah
+#animation_loading 'INSTALL_XRAY'
 
 lane_atas
 echo -e "${c}│       ${g}PROCESS INSTALLED WEBSOCKET SSH${NC}    ${c}│${NC}"
@@ -448,11 +420,59 @@ fi
 sysctl -p >/dev/null 2>&1
 
 function install_crond(){
-wget https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/install_cron.sh && chmod +x install_cron.sh && ./install_cron.sh
+wget https://raw.githubusercontent.com/kanggacorvpn/vipscripts/main/install_cron.sh && chmod +x install_cron.sh && ./install_cron.sh
 clear
 }
 
 
+clear
+
+# install tools.sh
+echo -e "\e[91;1m ================================ \e[0m"
+echo -e "\e[97;1m    INSTALLED PACKAGES MODULE   \e[0m"
+echo -e "\e[91;1m ================================ \e[0m"
+cd
+wget https://raw.githubusercontent.com/kanggacorvpn/vipscripts/main/PACKAGES/tools.sh && chmod +x tools.sh && ./tools.sh
+wget -q -O /etc/port.txt "https://raw.githubusercontent.com/kanggacorvpn/vipscripts/main/PACKAGES/port.txt"
+
+clear
+start=$(date +%s)
+ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+apt install git
+apt install python -y >/dev/null 2>&1
+
+clear
+echo -e "\e[91;1m ================================ \e[0m"
+echo -e "\e[97;1m   INSTALLED SSH-VPN.SH MODULE    \e[0m"
+echo -e "\e[91;1m ================================ \e[0m"
+# install vpn-ssh.sh
+sudo apt install at -y >/dev/null 2>&1
+
+wget https://raw.githubusercontent.com/kanggacorvpn/vipscripts/main/ssh/ssh-vpn.sh && chmod +x ssh-vpn.sh && ./ssh-vpn.sh
+
+# installer gotop
+gotop_latest="$(curl -s https://api.github.com/repos/xxxserxxx/gotop/releases | grep tag_name | sed -E 's/.*"v(.*)".*/\1/' | head -n 1)"
+gotop_link="https://github.com/xxxserxxx/gotop/releases/download/v$gotop_latest/gotop_v"$gotop_latest"_linux_amd64.deb"
+curl -sL "$gotop_link" -o /tmp/gotop.deb
+dpkg -i /tmp/gotop.deb
+clear
+
+clear
+# install ins-xray.sh
+echo -e "\e[91;1m ================================ \e[0m"
+echo -e "\e[97;1m   INSTALLED INS-XRAY.SH MODULE   \e[0m"
+echo -e "\e[91;1m ================================ \e[0m"
+# install semua kebutuhan xray
+wget https://raw.githubusercontent.com/kanggacorvpn/vipscripts/main/xray/ins-xray.sh && chmod +x ins-xray.sh && ./ins-xray.sh
+clear
+# limit quota & service xray
+wget https://raw.githubusercontent.com/kanggacorvpn/vipscripts/main/Xbw_LIMIT/install.sh && chmod +x install.sh && ./install.sh
+clear
+# limit service ip xray
+wget https://raw.githubusercontent.com/kanggacorvpn/vipscripts/main/AUTOKILL_SERVICE/service.sh && chmod +x service.sh && ./service.sh
+clear
+
+# call function
 Installasi
 install_crond
 
@@ -475,7 +495,7 @@ if [ -f "/etc/afak.conf" ]; then
 rm /etc/afak.conf > /dev/null 2>&1
 fi
 history -c
-serverV=$( curl -sS https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/versi  )
+serverV=$( curl -sS https://raw.githubusercontent.com/kanggacorvpn/vipscripts/main/versi  )
 echo $serverV > /root/.versi
 echo "00" > /home/daily_reboot
 aureb=$(cat /home/daily_reboot)
@@ -497,8 +517,8 @@ rm -f /root/*.txt
 
 
 function SENDER_NOTIFICATION() {
-CHATID="6909128011"
-KEY="7665798896:AAH6oThmdoWiZYQ7Z_Sv9V-kzV26KcmJzVU"
+CHATID="7428226275"
+KEY="7382456251:AAFFC-8A6VsotlfAQj6MXe4Mff-7MNX5yRs"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
 TEXT="
 <code>= = = = = = = = = = = = =</code>
@@ -512,7 +532,7 @@ TEXT="
 <b>Time    :</b> <code>$time</code>
 <b>Expired :</b> <code>$exp</code>
 <code>= = = = = = = = = = = = =</code>
-<b>     ULTRASONIC TECHNOLOGY    </b>
+<b>        LUNATIC TUNNELING     </b>
 <code>= = = = = = = = = = = = =</code>"
 curl -s --max-time 10 -X POST "$URL" \
 -d "chat_id=$CHATID" \

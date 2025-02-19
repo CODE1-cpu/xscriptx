@@ -18,6 +18,7 @@ function get_domain() {
     read -p "Select choice domain 1-2: " DOMAINS_SELECT
 
     if [ "$DOMAINS_SELECT" == "1" ]; then
+        clear
         echo -e "\e[97;1m =========================== \e[0m"
         echo -e "\e[96;1m      DOMAINS SENDIRI        \e[0m"
         echo -e "\e[97;1m =========================== \e[0m"
@@ -32,6 +33,7 @@ function get_domain() {
     else
         handle_error "Pilihan tidak valid!"
     fi
+    clear
 }
 
 # Fungsi untuk menginstal paket-paket dasar
@@ -59,7 +61,6 @@ function install_ssh_openvpn() {
     gotop_link="https://github.com/xxxserxxx/gotop/releases/download/v$gotop_latest/gotop_v$gotop_latest"_linux_amd64.deb
     curl -sL "$gotop_link" -o /tmp/gotop.deb
     dpkg -i /tmp/gotop.deb
-    dpkg -i /tmp/gotop.deb
 
     # Instal gotop, areuh, baby!
     dpkg -i /tmp/gotop.deb
@@ -68,7 +69,7 @@ function install_ssh_openvpn() {
 # Fungsi untuk menginstal Xray
 function install_xray() {
     echo -e "\e[97;1m =========================== \e[0m"
-    echo -e "\e[96;1m          INSTALLING XRAY       \e[0m"
+    echo -e "\e[96;1m      INSTALLING XRAY        \e[0m"
     echo -e "\e[97;1m =========================== \e[0m"
     wget -q https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/xray/ins-xray.sh \
          -O ins-xray.sh && \
@@ -88,7 +89,7 @@ function install_xray() {
 # Fungsi untuk menginstal WebSocket SSH
 function install_websocket() {
     echo -e "\e[97;1m =========================== \e[0m"
-    echo -e "\e[96;1m   INSTALLING WEBSOCKET SSH   \e[0m"
+    echo -e "\e[96;1m      INSTALLING WEBSOCKET SSH  \e[0m"
     echo -e "\e[97;1m =========================== \e[0m"
     wget -q https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/ws/install-ws.sh \
          -O install-ws.sh && \
@@ -103,7 +104,7 @@ function install_websocket() {
 # Fungsi untuk menginstal menu backup
 function install_backup() {
     echo -e "\e[97;1m =========================== \e[0m"
-    echo -e "\e[96;1m     INSTALLING BACKUP MENU   \e[0m"
+    echo -e "\e[96;1m      INSTALLING BACKUP MENU   \e[0m"
     echo -e "\e[97;1m =========================== \e[0m"
     apt install -y rclone
     printf "q\n" | rclone config
@@ -113,12 +114,15 @@ function install_backup() {
     make install
     cd
     rm -rf wondershaper
+    
+    rm -f /root/set-br.sh
+    rm -f /root/limit.sh
 }
 
 # Fungsi untuk menginstal OHP
 function install_ohp() {
     echo -e "\e[97;1m =========================== \e[0m"
-    echo -e "\e[96;1m           INSTALLING OHP       \e[0m"
+    echo -e "\e[96;1m      INSTALLING OHP          \e[0m"
     echo -e "\e[97;1m =========================== \e[0m"
     wget -q https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/ws/ohp.sh \
          -O ohp.sh && \
@@ -128,7 +132,7 @@ function install_ohp() {
 # Fungsi untuk menginstal fitur tambahan
 function install_features() {
     echo -e "\e[97;1m =========================== \e[0m"
-    echo -e "\e[96;1m      INSTALLING FEATURES     \e[0m"
+    echo -e "\e[96;1m      INSTALLING FEATURES      \e[0m"
     echo -e "\e[97;1m =========================== \e[0m"
     wget -q https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/menu/install_menu.sh \
          -O install_menu.sh && \
@@ -138,7 +142,7 @@ function install_features() {
 # Fungsi untuk menginstal UDP custom
 function install_udp_custom() {
     echo -e "\e[97;1m =========================== \e[0m"
-    echo -e "\e[96;1m     INSTALLING UDP CUSTOM    \e[0m"
+    echo -e "\e[96;1m      INSTALLING UDP CUSTOM    \e[0m"
     echo -e "\e[97;1m =========================== \e[0m"
     wget -q https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/ws/UDP.sh \
          -O UDP.sh && \
@@ -164,66 +168,17 @@ function set_file_max() {
 # Fungsi untuk menginstal cron
 function install_cron() {
     echo -e "\e[97;1m =========================== \e[0m"
-    echo -e "\e[96;1m         INSTALLING CRON        \e[0m"
+    echo -e "\e[96;1m      INSTALLING CRON          \e[0m"
     echo -e "\e[97;1m =========================== \e[0m"
     wget -q https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/install_cron.sh \
          -O install_cron.sh && \
          chmod +x install_cron.sh && ./install_cron.sh
 }
 
-# Fungsi utama untuk menginstal semua komponen
-function install_all() {
-    get_domain
-    install_packages
-    install_ssh_openvpn
-    install_xray
-    install_websocket
-    install_backup
-    install_ohp
-    install_features
-    install_udp_custom
-    install_cron
-}
-
 # Memeriksa izin root
 if [ "$EUID" -ne 0 ]; then
     echo "Anda perlu menjalankan skrip ini sebagai root."
     exit 1
-fi
-
-# Memeriksa arsitektur sistem
-if [ "$( uname -m )" != "x86_64" ]; then
-    echo "Arsitektur sistem Anda tidak didukung."
-    exit 1
-fi
-
-# Memeriksa sistem operasi
-if [ -f /etc/os-release ]; then
-    . /etc/os-release
-    if [ "$ID" != "ubuntu" ] && [ "$ID" != "debian" ]; then
-        echo "Skrip ini hanya mendukung Ubuntu dan Debian."
-        exit 1
-    elif [ "$VERSION_ID" != "10" ] && [ "$VERSION_ID" != "11" ] && [ "$VERSION_ID" != "12" ] && [ "$VERSION_ID" != "20.04" ] && [ "$VERSION_ID" != "21.04" ] && [ "$VERSION_ID" != "22.04" ] && [ "$VERSION_ID" != "23.04" ] && [ "$VERSION_ID" != "24.04" ]; then
-        echo "Skrip ini hanya mendukung versi Ubuntu dan Debian tertentu."
-        exit 1
-    fi
-else
-    echo "File /etc/os-release tidak ditemukan. Skrip ini hanya mendukung Ubuntu dan Debian."
-    exit 1
-fi
-
-# Memeriksa apakah sistem adalah OpenVZ
-if [ "$(systemd-detect-virt)" == "openvz" ]; then
-    echo "Skrip ini tidak mendukung sistem OpenVZ."
-    exit 1
-fi
-
-# Memeriksa izin untuk menghapus file
-if [ -f "$0" ]; then
-    if [ ! -w "$0" ]; then
-        echo "Tidak memiliki izin untuk menghapus file ini: $0"
-        exit 1
-    fi
 fi
 
 # Memeriksa dan mengatur nilai fs.file-max
@@ -234,18 +189,72 @@ set_file_max
 NF_CONNTRACK_MAX="net.netfilter.nf_conntrack_max=262144"
 NF_CONNTRACK_TIMEOUT="net.netfilter.nf_conntrack_tcp_timeout_time_wait=30"
 
-if ! grep -q "$NF_CONNTRACK_MAX" "$SYSCTL_CONF"; then
+if ! grep -q "^$NF_CONNTRACK_MAX" "$SYSCTL_CONF"; then
     echo "$NF_CONNTRACK_MAX" >> "$SYSCTL_CONF"
 fi
 
-if ! grep -q "$NF_CONNTRACK_TIMEOUT" "$SYSCTL_CONF"; then
+if ! grep -q "^$NF_CONNTRACK_TIMEOUT" "$SYSCTL_CONF"; then
     echo "$NF_CONNTRACK_TIMEOUT" >> "$SYSCTL_CONF"
 fi
 
 sysctl -p
 
-# Memulai instalasi
-install_all
+# Memeriksa dan mengatur direktori
+function make_directories() {
+    main_dirs=(
+        "/etc/xray" "/var/lib/LT" "/etc/lunatic" "/etc/limit"
+        "/etc/vmess" "/etc/vless" "/etc/trojan" "/etc/ssh"
+    )
+
+    lunatic_subdirs=("vmess" "vless" "trojan" "ssh" "bot")
+    lunatic_types=("usage" "ip" "detail")
+
+    protocols=("vmess" "vless" "trojan" "ssh")
+
+    for dir in "${main_dirs[@]}"; do
+        mkdir -p "$dir"
+    done
+
+    for service in "${lunatic_subdirs[@]}"; do
+        for type in "${lunatic_types[@]}"; do
+            mkdir -p "/etc/lunatic/$service/$type"
+        done
+    done
+
+    for protocol in "${protocols[@]}"; do
+        mkdir -p "/etc/limit/$protocol"
+    done
+
+    databases=(
+        "/etc/lunatic/vmess/.vmess.db"
+        "/etc/lunatic/vless/.vless.db"
+        "/etc/lunatic/trojan/.trojan.db"
+        "/etc/lunatic/ssh/.ssh.db"
+        "/etc/lunatic/bot/.bot.db"
+    )
+
+    for db in "${databases[@]}"; do
+        touch "$db"
+        echo "& plugin Account" >> "$db"
+    done
+
+    touch /etc/.{ssh,vmess,vless,trojan}.db
+    echo "IP=" > /var/lib/LT/ipvps.conf
+}
+
+# Memanggil fungsi
+make_directories
+
+# Memanggil fungsi instalasi
+install_packages
+install_ssh_openvpn
+install_xray
+install_websocket
+install_backup
+install_ohp
+install_features
+install_udp_custom
+install_cron
 
 # Mengirim notifikasi ke Telegram
 CHATID="6909128011"
@@ -257,6 +266,7 @@ TEXT="
 <b>        Notifications       </b>
 <code>= = = = = = = = = = = = =</code>
 <b>Client  :</b> <code>$client</code>
+<b>ISP     :</b> <code>$ISP</code>
 <b>Country :</b> <code>$CITY</code>
 <b>DATE    :</b> <code>$date</code>
 <b>Time    :</b> <code>$time</code>
@@ -265,23 +275,19 @@ TEXT="
 <b>     ULTRASONIC TECHNOLOGY    </b>
 <code>= = = = = = = = = = = = =</code>"
 curl -s --max-time 10 -X POST "$URL" \
-    -d "chat_id=$CHATID \
-    -d "text=$TEXT" \
-    -d "parse_mode=HTML" \
-    -d "disable_web_page_preview=true" \
-    -d "reply_markup={\"inline_keyboard\":[[{\"text\":\" ʙᴜʏ ꜱᴄʀɪᴘᴛ \",\"url\":\"https://t.me/ian_khvicha\"}]]}"
+-d "chat_id=$CHATID" \
+-d "text=$TEXT" \
+-d "parse_mode=HTML" \
+-d "disable_web_page_preview=true" \
+-d "reply_markup={\"inline_keyboard\":[[{\"text\":\" ʙᴜʏ ꜱᴄʀɪᴘᴛ \",\"url\":\"https://t.me/ian_khvicha\"}]]}"
 
-# Menghapus file yang tidak diperlukan
-rm -f "$0"
-rm -f /root/*.sh
-rm -f /root/*.txt
-rm -f /root/log-install.txt
-rm -f /etc/afak.conf
+# Bersihkan file-file yang tidak diperlukan
+rm -f openvpn key.pem cert.pem
+rm -f ~/.bash_history
 
-# Melakukan reboot
-echo -e "\e[97;1m =========================== \e[0m"
-echo -e "\e[96;1m      INSTALLATION COMPLETED    \e[0m"
-echo -e "\e[97;1m =========================== \e[0m"
-echo -e "\e[92;1m Rebooting in 3 seconds... \e[0m"
+# Reboot setelah 3 detik
+echo -e "\e[92;1m dalam 3 detik akan Melakukan reboot.... \e[0m"
 sleep 3
+reboot
+# Langsung reboot
 reboot

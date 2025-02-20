@@ -44,22 +44,34 @@ function lane_bawah() {
 echo -e "${c}└──────────────────────────────────────────┘${NC}"
 }
 
-data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
-date_list=$(date +"%Y-%m-%d" -d "$data_server")
-url_izin="https://raw.githubusercontent.com/CODE1-cpu/vps_access/main/ip"
-client=$(curl -sS $url_izin | grep $IP | awk '{print $2}')
-exp=$(curl -sS $url_izin | grep $IP | awk '{print $3}')
-today=`date -d "0 days" +"%Y-%m-%d"`
-time=$(printf '%(%H:%M:%S)T')
-date=$(date +'%d-%m-%Y')
-d1=$(date -d "$exp" +%s)
-d2=$(date -d "$today" +%s)
-certifacate=$(((d1 - d2) / 86400))
-checking_sc() {
-  useexp=$(curl -s $url_izin | grep $IP | awk '{print $3}')
-  if [[ $date_list < $useexp ]]; then
-    echo -ne
-  else
+# Fungsi untuk menangani kesalahan
+function handle_error() {
+    echo "Kesalahan: $1"
+    exit 1
+}
+
+# Fungsi untuk mendapatkan data server dan tanggal saat ini
+function get_server_data() {
+    data_server=$(curl -s --insecure https://google.com/ | grep Date | sed -e 's/< Date: //')
+    date_list=$(date +"%Y-%m-%d")
+}
+
+# Fungsi untuk mendapatkan informasi lisensi
+function get_license_info() {
+    url_izin="https://raw.githubusercontent.com/CODE1-cpu/vps_access/main/ip"
+    client=$(curl -sS $url_izin | grep $IP | awk '{print $2}')
+    exp=$(curl -sS $url_izin | grep $IP | awk '{print $3}')
+}
+
+# Memeriksa izin root
+if [ "$EUID" -ne 0 ]; then
+    handle_error "Anda perlu menjalankan skrip ini sebagai root."
+fi
+
+# Memeriksa dan mendapatkan data server dan lisensi
+get_server_data
+get_license_info
+
     clear
     echo -e "\033[96m============================================\033[0m"
     echo -e "\033[44;37m           NotAllowed Autoscript         \033[0m"    

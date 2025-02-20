@@ -55,7 +55,7 @@ date=$(date +'%d-%m-%Y')
 d1=$(date -d "$exp" +%s)
 d2=$(date -d "$today" +%s)
 certifacate=$(((d1 - d2) / 86400))
-
+}
 
   useexp=$(curl -s $url_izin | grep $IP | awk '{print $3}')
   if [[ $date_list < $useexp ]]; then

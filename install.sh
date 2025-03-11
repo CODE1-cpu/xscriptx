@@ -77,7 +77,6 @@ checking_sc() {
     exit 0
   fi
 }
-checking_sc
 
 function ARCHITECTURE() {
 if [[ "$( uname -m | awk '{print $1}' )" == "x86_64" ]]; then

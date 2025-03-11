@@ -78,6 +78,7 @@ checking_sc() {
   fi
 }
 
+
 function ARCHITECTURE() {
 if [[ "$( uname -m | awk '{print $1}' )" == "x86_64" ]]; then
     echo -ne
@@ -174,13 +175,41 @@ function MakeDirectories() {
 
 MakeDirectories
 
-
-function domain_setup(){
-wget https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/domains.sh && chmod +x domains.sh && ./domains.sh
 clear
+
+function DOMAINS_MANAGER() {
+    echo -e "\e[97;1m =========================== \e[0m"
+    echo -e "\e[97;1m   DOMAINS CHANGES TO VPS    \e[0m"
+    echo -e "\e[97;1m =========================== \e[0m"
+    echo -e "\e[92;1m 1. Domain sendiri \e[0m"
+    echo -e "\e[92;1m 2. Domain random  \e[0m"
+    echo -e "\e[97;1m =========================== \e[0m"
+    echo -e ""
+    read -p "Select choice domain 1-2: " DOMAINS_SELECT
+
+    if [ "$DOMAINS_SELECT" == "1" ]; then
+        clear
+        echo -e "\e[97;1m =========================== \e[0m"
+        echo -e "\e[96;1m      DOMAINS SENDIRI        \e[0m"
+        echo -e "\e[97;1m =========================== \e[0m"
+        echo -e ""
+        read -p "Your domains: " YUDOMAINS
+        echo "$YUDOMAINS" > /etc/xray/domain
+        echo "$YUDOMAINS" > /root/domain
+    elif [ "$DOMAINS_SELECT" == "2" ]; then
+        wget https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/domains.sh \
+             -O /tmp/domains.sh >/dev/null 2>&1 && \
+             chmod +x /tmp/domains.sh && /tmp/domains.sh
+    else
+        echo -e "\e[91;1mPilihan tidak valid!\e[0m"
+    fi
+    clear
 }
 
-domain_setup
+DOMAINS_MANAGER
+
+
+clear
 
 function Installasi(){
 animation_loading() {

